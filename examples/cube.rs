@@ -189,7 +189,6 @@ impl Example {
             dimension: wgpu::TextureDimension::D2,
             format: wgpu::TextureFormat::R8Uint,
             usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::COPY_DST,
-            view_formats: &[wgpu::TextureFormat::R8Uint],
         });
         let texture_view = texture.create_view(&wgpu::TextureViewDescriptor::default());
         queue.write_texture(
@@ -332,10 +331,7 @@ fn main() {
     // Set up window and GPU
     let event_loop = EventLoop::new();
 
-    let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
-        backends: wgpu::Backends::PRIMARY,
-        ..Default::default()
-    });
+    let instance = wgpu::Instance::new(wgpu::Backends::PRIMARY);
 
     let (window, size, surface) = {
         let version = env!("CARGO_PKG_VERSION");
@@ -348,7 +344,7 @@ fn main() {
         window.set_title(&format!("imgui-wgpu {version}"));
         let size = window.inner_size();
 
-        let surface = unsafe { instance.create_surface(&window) }.unwrap();
+        let surface = unsafe { instance.create_surface(&window) };
 
         (window, size, surface)
     };
@@ -373,7 +369,6 @@ fn main() {
         height: size.height,
         present_mode: wgpu::PresentMode::Fifo,
         alpha_mode: wgpu::CompositeAlphaMode::Auto,
-        view_formats: vec![wgpu::TextureFormat::Bgra8Unorm],
     };
 
     surface.configure(&device, &surface_desc);
@@ -461,7 +456,6 @@ fn main() {
                     height: size.height,
                     present_mode: wgpu::PresentMode::Fifo,
                     alpha_mode: wgpu::CompositeAlphaMode::Auto,
-                    view_formats: vec![wgpu::TextureFormat::Bgra8Unorm],
                 };
 
                 surface.configure(&device, &surface_desc);

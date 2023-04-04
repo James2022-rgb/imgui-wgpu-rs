@@ -178,7 +178,6 @@ impl Texture {
             dimension: config.dimension,
             format: config.format.unwrap_or(renderer.config.texture_format),
             usage: config.usage,
-            view_formats: &[config.format.unwrap_or(renderer.config.texture_format)],
         }));
 
         // Extract the texture view.
